@@ -9,6 +9,7 @@ import sys
 import csv
 import threading
 from IMU_SETUP import lib
+import os
 
 frames = 20
 sys.version[0] == '3'
@@ -16,9 +17,10 @@ ser = serial.Serial("/dev/ttyS0", 115200)
 filename = 'Sensors_read_time.csv'
 datafile = 'Sensors_data.csv'
 timeDiffer = []
-rowList = []
+rowList = [] #for sensors data csv file
 
 
+#get IMU data
 def getIMU():
     global imu
     lib.lsm9ds1_readAccel(imu)
@@ -37,6 +39,7 @@ def getIMU():
     return (cax,cay,caz,cgx,cgy,cgz)
 
 
+#get TFmini Lidar data
 def getLidar():
     #TFmini data
     recv = ser.read(9)
@@ -47,10 +50,13 @@ def getLidar():
         ser.reset_input_buffer()
         return distance
 
+
+#data function which calls getIMU and getLidar, packs data
 def getData():
     global start
     global imu
     global lasttime
+    print("pid for sensors %i" % os.getpid())
     while time.time() - start < 10:
         if lib.lsm9ds1_accelAvailable(imu) > 0 and ser.in_waiting > 8:
             IMUdata = getIMU()
@@ -78,15 +84,8 @@ def getData():
             
     return 1
 
-            
-def f(x):
-    global start
-    while time.time() - start < 5:
-        y = x*x
-    print("for f function, total time elasped is:%f" % (time.time() - start))
-    return x*x
 
-
+#generate photo names based on how many frames taken each time
 def filenames():
     frame = 0
     while frame < frames:
@@ -95,8 +94,10 @@ def filenames():
         frame = frame + 1
 
 
+#rapidly capturing photos, number is frames
 def capture():
     startC = time.time()
+    print("pid for camera %i" % os.getpid())
     while time.time() - startC < 10:
         with picamera.PiCamera(resolution=(480,480), framerate=40) as camera:
             camera.start_preview()
@@ -106,9 +107,12 @@ def capture():
     return 1
 
 
-
+#IMU setup
 imu = lib.lsm9ds1_create()
 lib.lsm9ds1_begin(imu)
+
+
+#main, which parallelizes sensors and camera reading
 if __name__ == '__main__':
     if lib.lsm9ds1_begin(imu) == 0:
         print("Failed to communicate with LSM9DS1.")
@@ -122,10 +126,6 @@ if __name__ == '__main__':
     pool = Pool()
     sensors = pool.apply_async(getData)
     camera = pool.apply_async(capture)
-    #result1 = pool.apply_async(f,[4])
-    #result3 = pool.apply_async(capture)
-    #answer1 = result1.get()
-    #answer2 = result3.get()
     #sensorAnswer = sensors.get()
     cameraAnswer = camera.get()
     end = time.time()
