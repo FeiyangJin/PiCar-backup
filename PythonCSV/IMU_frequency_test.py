@@ -55,18 +55,19 @@ def getData():
             cgxl.append(cgx)
             cgyl.append(cgy)
             cgzl.append(cgz)
-            print(cax,cay,caz,cgx,cgy,cgz)
-##            diff = time.time() - lasttime
-##            timeDiffer.append(diff)
-##            #print(diff)
-##            lasttime = time.time()
+            #print(cax,cay,caz,cgx,cgy,cgz)
+            diff = time.time() - lasttime
+            timeDiffer.append(diff)
+            #print(diff)
+            lasttime = time.time()
 
-##    print(timeDiffer)
-##    with open(filename,"a",newline = '') as csvfile:
-##        spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-##        for i in range(len(caxl)):
-##            row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
-##            spamwriter.writerow(row)
+   print(timeDiffer)
+   with open(filename,"a",newline = '') as csvfile:
+       spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+       for i in range(len(caxl)):
+           row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
+           spamwriter.writerow(row)
+
 
 startTime = time.time()
 lasttime = time.time()

@@ -18,6 +18,8 @@ datafile = 'Lidar_IMU_data_optimize.csv'
 timeDiffer = []
 rowList = []
 
+
+#get IMU data
 def getIMU():
     global imu
     lib.lsm9ds1_readAccel(imu)
@@ -36,6 +38,7 @@ def getIMU():
     return (cax,cay,caz,cgx,cgy,cgz)
 
 
+#get TFmini Lidar data
 def getLidar():
     #TFmini data
     recv = ser.read(9)
@@ -46,19 +49,20 @@ def getLidar():
         ser.reset_input_buffer()
         return distance
 
-    
+
+#the function which calls getIMU and getLidar
 def getData():
     global lasttime
     global imu
 
     current = time.time()
     while current - startTime < 10:
-        
+
         current = time.time()
         if lib.lsm9ds1_accelAvailable(imu) > 0 and ser.in_waiting > 8:
             IMUdata = getIMU()
             Lidardata = getLidar()
-            
+
             currentTime = str(datetime.datetime.now()); #timestamp data
             row = [currentTime,Lidardata,IMUdata[0],IMUdata[1],IMUdata[2],IMUdata[3],IMUdata[4],IMUdata[5]] #the row being written to csv file, just x and y accel
             rowList.append(row)
@@ -68,21 +72,23 @@ def getData():
             lasttime = time.time()
             #print(row)
 
+    #After 10 seconds, write IMU and Lidar data into a csv file
     print("start writing data")
     with open(datafile,"a",newline = '') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         for i in range(len(rowList)):
             row = [rowList[i]]
             spamwriter.writerow(row)
-            
+
+    #write reading frequency into a csv file
     print("start writing frequency")
     with open(filename,"a",newline = '') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         for i in range(len(timeDiffer)):
             row = [timeDiffer[i]]
             spamwriter.writerow(row)
-    
-    
+
+
 startTime = time.time()
 lasttime = time.time()
 #connect with IMU
