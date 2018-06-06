@@ -10,7 +10,7 @@ import threading
 import sys
 from IMU_SETUP import lib
 
-filename = 'IMU_data.csv'
+filename = 'IMU_speed.csv'
 
 timeDiffer = []
 
@@ -30,10 +30,10 @@ def getData():
         quit()
     lib.lsm9ds1_calibrate(imu)
 
-    currentTime = time.time()
-    while currentTime - startTime < 20:
-        currentTime = time.time()
+    while time.time() - startTime < 10:
+        beforeIf = time.time()
         if lib.lsm9ds1_accelAvailable(imu) > 0:
+            afterIf = time.time()
             lib.lsm9ds1_readAccel(imu)
             ax = lib.lsm9ds1_getAccelX(imu)
             ay = lib.lsm9ds1_getAccelY(imu)
@@ -48,26 +48,26 @@ def getData():
             cgy = lib.lsm9ds1_calcGyro(imu, gy)
             cgz = lib.lsm9ds1_calcGyro(imu, gz)
 
-            #add to list
-            caxl.append(cax)
-            cayl.append(cay)
-            cazl.append(caz)
-            cgxl.append(cgx)
-            cgyl.append(cgy)
-            cgzl.append(cgz)
+##            #add to list
+##            caxl.append(cax)
+##            cayl.append(cay)
+##            cazl.append(caz)
+##            cgxl.append(cgx)
+##            cgyl.append(cgy)
+##            cgzl.append(cgz)
             #print(cax,cay,caz,cgx,cgy,cgz)
-            diff = time.time() - lasttime
-            timeDiffer.append(diff)
-            #print(diff)
+            #diff = time.time() - lasttime
+            timeDiffer.append(time.time() - lasttime - afterIf + beforeIf)
+            #print(time.time() - lasttime)
             lasttime = time.time()
 
-   print(timeDiffer)
-   with open(filename,"a",newline = '') as csvfile:
-       spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-       for i in range(len(caxl)):
-           row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
-           spamwriter.writerow(row)
-
+    print("start writing data")
+    with open(filename,"a",newline = '') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        for i in range(len(timeDiffer)):
+            #row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
+            row = [timeDiffer[i]]
+            spamwriter.writerow(row)
 
 startTime = time.time()
 lasttime = time.time()

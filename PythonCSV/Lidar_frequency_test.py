@@ -18,7 +18,6 @@ filename = 'Lidar_Frequency.csv'
 
 timeDiffer = []
 
-
 def getData():
     global lasttime
     currentTime = time.time()
@@ -33,7 +32,7 @@ def getData():
                 distance = recv[2] + recv[3] * 256
                 ser.reset_input_buffer()
                 #print("Distance is:%i" % (distance))
-
+                
                 diff = time.time() - lasttime;
                 timeDiffer.append(diff)
                 #print(diff)
@@ -45,7 +44,7 @@ def getData():
         for i in range(len(timeDiffer)):
             row = [timeDiffer[i]]
             spamwriter.writerow(row)
-
+        
 
 startTime = time.time()
 lasttime = time.time()

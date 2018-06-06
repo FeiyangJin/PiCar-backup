@@ -3,13 +3,10 @@
 from threading import Timer
 from multiprocessing import Pool
 from IMU_SETUP import lib
-import time
-import datetime
-import serial
-import sys
-import csv
-import picamera
-import os
+from collections import deque
+import numpy as np
+import time,datetime,serial,sys,csv,picamera,os
+
 
 sys.version[0] == '3'
 ser = serial.Serial("/dev/ttyS0", 115200)
@@ -17,27 +14,40 @@ ser = serial.Serial("/dev/ttyS0", 115200)
 imu = lib.lsm9ds1_create()
 lib.lsm9ds1_begin(imu)
 
-readFrequency = 0.3
+readFrequency = 0.019
 cameraFrequency = 0.5
 taskDuration = 10
 frames = 5
 
 
+sensorDataDeque = deque()
 sensorData = []
-writeFrequency = 6
+writeFrequency = 10
 dataFile = "sensorData.csv"
 
+sensorDataNumpyArray = np.array(['time','distance','ax','ay','az','gx','gy','gz'])
 
 #write sensor data to a csv file
 def writeSensorData():
+    global sensorDataNumpyArray
+    writeStart = time.time()
     with open(dataFile,"a",newline = '') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-        writeTime = "writeTime:" + str(datetime.datetime.now())
-        spamwriter.writerow(writeTime)
+##        for row in sensorDataNumpyArray:
+##            spamwriter.writerow([row])
+        #writeTime = "writeTime:" + str(datetime.datetime.now())
+        #title = [writeTime,len(sensorData)]
+        #spamwriter.writerow(title)
+        #length = len(sensorData)
         for element in sensorData:
-            row = [element]
-            spamwriter.writerow(row)
+            #row = [sensorData.pop()]
+            spamwriter.writerow([element])
+##        for element in sensorDataDeque:
+##            spamwriter.writerow([element])
     sensorData.clear()
+##    sensorDataNumpyArray = np.delete(sensorDataNumpyArray,slice(0,sensorDataNumpyArray.ndim),axis=0)    
+    writeEnd = time.time()
+    print("total writing time is %f" % (writeEnd - writeStart))
     Timer(writeFrequency,writeSensorData).start()
 
             
@@ -74,19 +84,26 @@ def getLidar():
 
 def getData():
     global last
+    global sensorDataNumpyArray
     #print("pid for sensors:%d" % os.getpid())
     Timer(writeFrequency,writeSensorData).start()
     while True:
         time.sleep(readFrequency)
-        print("time for sensors:%f" % (time.time() - last))
+        #print("time for sensors:%f" % (time.time() - last))
         if lib.lsm9ds1_accelAvailable(imu) > 0 and ser.in_waiting > 8:
+            #print("time for sensors:%f" % (time.time() - last))
             Lidardata = getLidar()
             IMUdata = getIMU()
             currentTime = str(datetime.datetime.now())
+            #row = np.array([currentTime,Lidardata,IMUdata[0],IMUdata[1],IMUdata[2],IMUdata[3],IMUdata[4],IMUdata[5]])
+            #sensorDataNumpyArray = np.vstack((sensorDataNumpyArray,row))
             row = [currentTime,Lidardata,IMUdata[0],IMUdata[1],IMUdata[2],IMUdata[3],IMUdata[4],IMUdata[5]]
+            #sensorDataDeque.append(row)
             sensorData.append(row)
+            #print(sensorDataNumpyArray)
             #print(Lidardata,IMUdata)
-        last = time.time()
+            #last = time.time()
+        #last = time.time()
     #Timer(readFrequency,getData).start()
 
 
@@ -109,7 +126,7 @@ def capture():
     with picamera.PiCamera(resolution=(480,480), framerate=40) as camera:
         while True:
             time.sleep(cameraFrequency)
-            print("time for camera:%f" % (time.time() - last))
+            #print("time for camera:%f" % (time.time() - last))
             #camera.capture_sequence(filenames(), use_video_port=True)
             last = time.time()
     #Timer(cameraFrequency,capture).start()
