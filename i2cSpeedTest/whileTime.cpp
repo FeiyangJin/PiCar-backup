@@ -11,17 +11,29 @@ int main(int argc, char* argv[]){
 //address for IMU
 list<int> time;
 
-int fd = wiringPiI2CSetup(0x6b);
+//int fd = wiringPiI2CSetup(0x6b);
 
 auto start = chrono::high_resolution_clock::now();
 auto last = chrono::high_resolution_clock::now();
+
+int i = 0;
 while(chrono::duration_cast<chrono::seconds>(last - start).count() < 10){
 auto now = chrono::high_resolution_clock::now();
+if(i < 1000){
+i++;
+continue;
+}
+else{
 auto duration = chrono::duration_cast<chrono::nanoseconds>(now - last);
-//cout << duration.count() << "ns" << endl;
-//add to list
 time.push_front(duration.count());
 last = now;
+i = 0;
+}
+//auto duration = chrono::duration_cast<chrono::nanoseconds>(now - last);
+//cout << duration.count() << "ns" << endl;
+//add to list
+//time.push_front(duration.count());
+//last = now;
 
 }
 

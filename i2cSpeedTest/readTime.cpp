@@ -15,24 +15,32 @@ int fd = wiringPiI2CSetup(0x6b);
 auto start = chrono::high_resolution_clock::now();
 auto last = chrono::high_resolution_clock::now();
 
-while(chrono::duration_cast<chrono::seconds>(last - start).count() < 10){
-auto beforeIf = chrono::high_resolution_clock::now();
+int i=0;
+int j=0;
+while(j < 100000){
+j++;
 if(wiringPiI2CRead(fd) != -1){
-auto afterIf = chrono::high_resolution_clock::now();
+	i++;
+	if(i < 500){
+		continue;
+	}
+	else{
 
-auto now = chrono::high_resolution_clock::now();
-auto ifTime = chrono::duration_cast<chrono::nanoseconds>(afterIf - beforeIf);
-auto duration = chrono::duration_cast<chrono::nanoseconds>(now - last);
-auto netTime = chrono::duration_cast<chrono::nanoseconds>(duration - ifTime);
-readTimeList.push_front(netTime.count());
+		auto now = chrono::high_resolution_clock::now();
+		auto duration = chrono::duration_cast<chrono::nanoseconds>(now - last);
+		readTimeList.push_front(duration.count());
 
-last = now;
-}
+		last = now;
+		i = 0;
+	}
+
+	}
 
 }
 
 ofstream myfile;
 myfile.open("readTime.csv");
+myfile << "hello";
 for(auto it=readTimeList.begin(); it!= readTimeList.end(); it++){
 	myfile << *it;
 	myfile << "\n";

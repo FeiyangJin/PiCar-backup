@@ -9,7 +9,7 @@ cmd2 = "put /home/pi/Desktop/backup.txt"
 
 cmd3 = "sftp pi@192.168.1.157 <<< $'put /home/pi/Desktop/backup.txt'"
 
-cmd4 = "scp /home/pi/Desktop/backup.txt pi@192.168.1.157:/home/pi"
+cmd4 = "scp /home/pi/Desktop/piCamera/photo.zip pi@192.168.1.157:/home/pi/socketTest"
 #os.system(cmd)
 
 #os.system(cmd2)
