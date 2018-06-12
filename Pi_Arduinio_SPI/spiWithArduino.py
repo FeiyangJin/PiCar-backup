@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 
-# mini-spi.py
-# 2016-03-18
-# Public Domain
+import time,pigpio
 
-import time
 
-import pigpio # http://abyz.co.uk/rpi/pigpio/python.html
-
+#open spi 
 pi = pigpio.pi()
 
 if not pi.connected:
@@ -15,18 +11,27 @@ if not pi.connected:
 
 h = pi.spi_open(0, 40000)
 
-stop = time.time() + 120.0
 
-n = 0
+#function for communicating with arduino
+def communicate():
+   while True:
+      #first send byts to arduino
+      pi.spi_write(h,b'\x03\x04')
 
-while time.time() < stop:
+      #sleep 1 second and read 1 byte
+      time.sleep(1)
+      #pi shoudl receive 0x08, which is sent from arduino
+      #spi_read returns a tuple, first is the number of bytes read,
+      #second is the byte array contains the bytes
+      (count,data) = pi.spi_read(h,1)
+      print("we get %s" % data)
 
-   n += 1
-   #pi.spi_xfer(h, "This is message number")
-   pi.spi_write(h,b'\x07')
-   time.sleep(1)
-   print(pi.spi_read(h,1))
 
-pi.spi_close(h)
+if __name__ == '__main__':
+   try:
+      communicate()
+   except:
+      pi.spi_close(h)
+      pi.stop()
+      
 
-pi.stop()
