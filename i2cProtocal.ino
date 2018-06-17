@@ -12,6 +12,7 @@ byte byte2;
 byte byte3;
 byte byte4;
 
+//Use for reading floats, Union saves all variables in same address
 typedef union{
 byte asBytes[4];
 float asFloat;
@@ -33,7 +34,7 @@ void setup() {
 }
 
 void loop() {
-  
+
 }
 
 // callback for received data
@@ -47,21 +48,21 @@ void receiveData(int byteCount){
         currentReadingFloatByte = 2;
         Serial.println(byte1);
         break;
-        
+
         case 2:
         byte2 = Wire.read();
         v.asBytes[1] = byte2;
         currentReadingFloatByte = 3;
         Serial.println(byte2);
         break;
-        
+
         case 3:
         byte3 = Wire.read();
         v.asBytes[2] = byte3;
         currentReadingFloatByte = 4;
         Serial.println(byte3);
         break;
-        
+
         case 4:
         byte4 = Wire.read();
         currentReadingFloatByte = 1;
@@ -70,13 +71,6 @@ void receiveData(int byteCount){
         Serial.println(byte4);
 
         Serial.println(v.asFloat,5);
-//        byte rawData[4];
-//        rawData[0] = byte1;
-//        rawData[1] = byte2;
-//        rawData[2] = byte3;
-//        rawData[3] = byte4;
-//        float floatData = *((float*)(rawData));
-//        Serial.println(floatData);
         break;
       }
     }
@@ -88,7 +82,7 @@ void receiveData(int byteCount){
         beginReadingFloat = 1;
       }
     }
-    
+
   }
 }
 
@@ -101,36 +95,31 @@ void sendData(){
   else{
     volatile unsigned long rawBits;
     rawBits =  *(unsigned long *) &data;
-    //Serial.println(rawBits);
+
     switch (currentFloatByte){
       case 1:
-      //Wire.write(1);
       Wire.write(rawBits >> 24 & 0xff);
       currentFloatByte ++;
       break;
-      
+
       case 2:
-      //Wire.write(2);
       Wire.write(rawBits >> 16 & 0xff);
       currentFloatByte ++;
       break;
-      
+
       case 3:
-      //Wire.write(3);
       Wire.write(rawBits >> 8 & 0xff);
       currentFloatByte ++;
       break;
-      
+
       case 4:
-      //Wire.write(4);
       Wire.write(rawBits & 0xff);
       currentFloatByte = 1;
       beginSendingFloat = 0;
       break;
-    
+
     }
-        
+
   }
 
 }
-

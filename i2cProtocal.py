@@ -27,11 +27,10 @@ def readFloat():
 
    #convert the binary to float
    result = struct.unpack('f', bytes([byte4,byte3,byte2,byte1]))
-   #result = float((byte1 & 0xff) << 24 | (byte2 & 0xff) << 16 | (byte3 & 0xff) << 8 | (byte4 & 0xff))
 
    time.sleep(0.5)
    return result
-   
+
 
 def sentFloat(data):
     binary = struct.pack('f',data)
@@ -49,13 +48,20 @@ def communicate():
 
      # sleep one second
      time.sleep(1)
+
+
+     #Uncomment following part and comment the above part
+     #if you are trying to read float from arduino
      
+     #var = 35
+     #bus.write_byte(address,var)
+     #print("RPI: Hi Arduino, I sent you ", chr(var))
      #number = bus.read_byte(address)
      #if its ascii is 35, we are going to read a float(4 bytes)
      #if number == 35:
      #   result = readFloat()
      #   print("The float is:",result)
-        
+
      #print("RPI: I received a digit ", number)
      print()
 
