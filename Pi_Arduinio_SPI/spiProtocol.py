@@ -2,7 +2,6 @@
 
 import time,pigpio,struct
 
-
 #open spi
 pi = pigpio.pi()
 
@@ -20,8 +19,6 @@ def getReadyForReadFloat():
 #function that reads the float
 def readFloat():
    
-   print("we are ready for reading a float")
-   
    (count1,byte1) = pi.spi_read(h,1)
 
    (count2,byte2) = pi.spi_read(h,1)
@@ -31,18 +28,37 @@ def readFloat():
    (count4,byte4) = pi.spi_read(h,1)
 
    result = struct.unpack('f', bytes([byte4[0],byte3[0],byte2[0],byte1[0]]))
-   print("The float is",result[0])
+   print("The float received is",result[0])
+
+
+#tell arduino we are going to send a float
+def getReadyForSendFloat():
+   pi.spi_write(h,b'\x03')
+
+
+#function that sends the float
+def sendFloat(floatData):
+   binary = struct.pack('f',floatData)
+   for byte in binary:
+      pi.spi_write(h,[byte])
 
 
 #function for communicating with arduino
 def communicate():
    while True:
-      #first send byts to arduino
-      #pi.spi_write(h,b'\x03\x05')
+      #first send float to arduino
+      var = float(input("Please enter a float "))
+      if not var:
+         continue
+      
+      getReadyForSendFloat()
+      sendFloat(var)
+      
       time.sleep(1)
       
       getReadyForReadFloat()
-      
+
+      #we want to check if arduino is able to send the float
       (count,data) = pi.spi_read(h,1)
       if data[0] == 35:
          readFloat()
