@@ -1,13 +1,35 @@
 float data = 3.14159;
 
+typedef union{
+byte asBytes[4];
+float asFloat;
+} floatval;
+
+floatval v;
+
+
 void setup(){
 Serial.begin(9600);
 }
 
 void loop(){
-  //Serial.println("hello");
-  sendFloat();
-  delay(2000);
+
+  if(Serial.available() > 0){
+
+    byte header = Serial.read();
+    if(header == 35){
+      while(!(Serial.available() > 3))
+      { continue;}
+      for(int i=0;i<4;i++){
+        v.asBytes[i] = Serial.read();
+      }
+
+      data = v.asFloat;
+      sendFloat();
+    }
+    
+  }
+  
 }
 
 void sendFloat(){
