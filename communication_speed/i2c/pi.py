@@ -3,38 +3,24 @@ import time
 import struct
 
 bus = smbus.SMBus(1)
-
+ 
 # This is the address we setup in the Arduino Program
 address = 0x04
 
-FloatHeader = 35
-intHeader = 36
 
-
-def readFloat():
-   #read 4 bytes of a float by read 4 times
-   byte1 = bus.read_byte(address)
-   byte2 = bus.read_byte(address)
-   byte3 = bus.read_byte(address)
-   byte4 = bus.read_byte(address)
-
-   #convert the binary to float
-   result = struct.unpack('f', bytes([byte4,byte3,byte2,byte1]))
-
-   time.sleep(0.5)
-   return result[0]
+def read100Bytes():
+   for i in range(0,100):
+      byte = bus.read_byte(address)
+      print(byte)
 
 
 def communicate():
    while True:
      # sleep one second
      time.sleep(1)
+      
+     read100Bytes()
 
-     number = bus.read_byte(address)
-     #if its ascii is 35, we are going to read a float(4 bytes)
-     if number == FloatHeader:
-        result = readFloat()
-        print("I received a float",result)
 
 
 if __name__ == '__main__':
