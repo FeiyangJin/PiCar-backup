@@ -63,9 +63,9 @@ def findNextImage(dataList,index):
         return 0
 
 
-fileNames = os.listdir("/home/pi/ok/camera")
+AllPhotoPath = "/home/pi/ok/camera"
+fileNames = os.listdir(AllPhotoPath)
 
-#imageTime = re.compile(r"^[^.j]*")
 imageTime = re.compile(r"^.*(?=(\.jpg))")
 
 fileTimes = []
@@ -81,8 +81,9 @@ fileTimes = sorted(fileTimes)
 
 dataTimes = []
 dataList = []
+dataCSVPath = '/home/pi/ok/Lidar_IMU_Data.csv'
 #read all data, which in the format [time,lidar,imu]
-with open('/home/pi/ok/Lidar_IMU_Data.csv',newline = '') as csvfile:
+with open(dataCSVPath,newline = '') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in spamreader:
         dataTimes.append(row[0])
@@ -105,7 +106,7 @@ for index in range(len(dataList)):
 
 #write new data into a new csv file 
 print("start writing csv file")
-with open('sync_data.csv',"a",newline = '') as csvfile:
+with open('sync_data_626.csv',"a",newline = '') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
     for data in dataList:
         spamwriter.writerow(data)
