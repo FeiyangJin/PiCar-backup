@@ -1,6 +1,5 @@
 var time = 0;
 var csvData;
-var AllImagePath = "/Users/kinfeiyang/Desktop/ok/camera/";
 imageDiv = document.getElementById("image_div");
 
 var increaseTime = function(){
@@ -62,19 +61,17 @@ function updateData(){
   imuGX = allRowData[5]
   imuGY = allRowData[6]
   imuGZ = allRowData[7]
-  document.getElementById('time_data').innerHTML = "time: " + dataTime;
-  document.getElementById('lidar_data').innerHTML = "Lidar distance: " + Lidar;
-  document.getElementById('imu_data_accel').innerHTML = "IMU accelaration data: " + imuAX + ", " + imuAY + ", "
-  + imuAZ;
-  document.getElementById("imu_data_gyro").innerHTML = "IMU Gyro data: " + imuGX + ", " + imuGY + ", " + imuGZ;
-
+  document.getElementById('time_data').innerHTML = "<h3>" + "Time:  " + dataTime + "<h3> <br>";
+  document.getElementById('lidar_data').innerHTML = "<h3>" + "Lidar distance:  " + Lidar + "<h3> <br>";
+  document.getElementById('imu_data').innerHTML = "<h3>" + "IMU data:  " + imuAX + ",  " + imuAY + ",  "
+  + imuAZ + ",  " + imuGX + ",  " + imuGY + ",  " + imuGZ + "<h3>";
 
 }
 
 //update image
 function updateImage(){
   allRowData2 = csvData.data[time]
-  filePath =  AllImagePath + allRowData2[8]
+  filePath = "/Users/kinfeiyang/Desktop/ok/camera/" + allRowData2[8]
   console.log(filePath)
   imageDiv.innerHTML = ""
   var image = document.createElement("img");

@@ -12,16 +12,10 @@ h1{
 
 }
 
-h2{
-	text-align:left;
-	font-size:220%;
-	color:Blue;
-  padding-bottom: 1px;
-}
 
 h3{
-	/*display: inline-block;*/
-	/*margin-bottom: 3%;*/
+	color:Blue;
+
 }
 
 p{
