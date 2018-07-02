@@ -32,7 +32,7 @@ def communicate():
      readCount = readCount + 1
    endTime = time.time()
    print("we read %i bytes in %f seconds" % (byteCount,(endTime - startTime)))
-   print("Each loop we read %i bytes, we execute %i loop" % (byteNumber,loopNumber))
+   print("Each loop we try read %i bytes, we execute %i loop" % (byteNumber,loopNumber))
 
 
 if __name__ == '__main__':
