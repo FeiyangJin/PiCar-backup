@@ -8,7 +8,7 @@ pi = pigpio.pi()
 if not pi.connected:
    exit(0)
 
-spiSpeed = 1500000
+spiSpeed = 1000000
 h = pi.spi_open(0, spiSpeed)
 
 
@@ -20,7 +20,7 @@ readCount = 0
 def readManyBytes():
    global byteCount
    for i in range(0,byteNumber):
-      (count,byte) = pi.spi_read(h,1)
+      (count,byte) = pi.spi_xfer(h,[1])
       byteCount = byteCount + 1
 
 
@@ -40,7 +40,12 @@ def communicate():
 
 if __name__ == '__main__':
    try:
-      communicate()
+      #communicate()
+      start = time.time()
+      for i in range(0,10000):
+         (count,byte) = pi.spi_xfer(h,[1,2,3,4])
+      end = time.time()
+      print(end - start)
    except Exception as e:
       print("Exception message:" + str(e))
       pi.spi_close(h)
