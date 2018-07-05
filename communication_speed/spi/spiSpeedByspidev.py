@@ -2,7 +2,7 @@ import spidev
 import time
 import pigpio
 
-byteNumber = 10000
+byteNumber = 1000000
 speed = 500000
 
 inputData = []
