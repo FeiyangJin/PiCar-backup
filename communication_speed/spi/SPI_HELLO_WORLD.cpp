@@ -1,9 +1,9 @@
 /**********************************************************
  SPI_Hello_Arduino
-   Configures an Raspberry Pi as an SPI master and  
-   demonstrates bidirectional communication with an 
+   Configures an Raspberry Pi as an SPI master and
+   demonstrates bidirectional communication with an
    Arduino Slave
-   
+
 Compile String:
 g++ -o SPI_Hello_Arduino SPI_Hello_Arduino.cpp
 ***********************************************************/
@@ -38,9 +38,9 @@ int spiTxRx(unsigned char txDat);
 /**********************************************************
 Main
   Setup SPI
-    Open file spidev0.0 (chip enable 0) for read/write 
+    Open file spidev0.0 (chip enable 0) for read/write
       access with the file descriptor "fd"
-    Configure transfer speed (1MkHz)
+    Configure transfer speed
 ***********************************************************/
 
 
@@ -61,11 +61,11 @@ int main (int argc, char *argv[])
 	fd = open("/dev/spidev0.0", O_RDWR);
 
 	ioctl (fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
-	
+
 	struct timeval start;
 	gettimeofday(&start,NULL);
 
-		
+
 	for (int i = 0; i < loopByte; i++)
 	{
 	 result = spiTxRx('J');
@@ -74,7 +74,7 @@ int main (int argc, char *argv[])
 	struct timeval end;
 	gettimeofday(&end,NULL);
 	long int startms = start.tv_sec * 1000 + start.tv_usec / 1000;
-	long int endms = end.tv_sec * 1000 + end.tv_usec / 1000; 
+	long int endms = end.tv_sec * 1000 + end.tv_usec / 1000;
 	cout << "total read time for " << (loopByte) << " bytes in milliseconds is " << (endms - startms) << endl;
 	cout << "The speed we set is " << speed << endl;
 
@@ -92,12 +92,12 @@ spiTxRx
  and configuration parameters to the SPI device via IOCTL
 
  Local variables txDat and rxDat are defined and passed by
- reference.  
+ reference.
 ***********************************************************/
 
 int spiTxRx(unsigned char txDat)
 {
- 
+
   unsigned char rxDat;
 
   struct spi_ioc_transfer spi;

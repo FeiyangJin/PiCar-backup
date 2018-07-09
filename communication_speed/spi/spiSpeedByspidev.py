@@ -1,6 +1,5 @@
 import spidev
 import time
-import pigpio
 
 byteNumber = 1000000
 speed = 500000

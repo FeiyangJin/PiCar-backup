@@ -1,6 +1,7 @@
 import serial
 import time
 
+#arduino port on raspberry pi, typically ttyACM0 or ttyACM1
 ser = serial.Serial('/dev/ttyACM0')
 ser.baudrate = 3000000
 byteNumber = 1000000
@@ -19,8 +20,8 @@ def communicate():
         sayHello()
         end = time.time()
         print("To send %i bytes, we use %f seconds" % (byteNumber,(end - start)))
-        
-        
+
+
 if __name__ == '__main__':
    try:
       communicate()

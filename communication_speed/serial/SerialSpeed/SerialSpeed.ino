@@ -6,7 +6,8 @@ Serial.begin(3000000);
 }
 
 void loop(){
-//Serial.println("Hi");
+
+//on serial monitor, type in 3 to read count 
 if(Serial.available() > 0){
   byte input = Serial.read();
   if(input == 51){

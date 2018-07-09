@@ -8,14 +8,14 @@ double outputByte = 0;
 void setup() {
   pinMode(13, OUTPUT);
   Serial.begin(9600); // start serial for output
-  
+
 
   // initialize i2c as slave
   Wire.begin(SLAVE_ADDRESS);
-  
+
   //set i2c speed
   //Wire.setClock(400000L);
-  
+
   // define callbacks for i2c communication
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
@@ -23,6 +23,7 @@ void setup() {
 }
 
 void loop() {
+  //in serial monitor, type in 3 to read count
   if(Serial.available()){
       byte input = Serial.read();
       if(input == 51){
@@ -30,7 +31,7 @@ void loop() {
         Serial.println(outputByte);
         outputByte = 0;
       }
-      
+
   }
 }
 
