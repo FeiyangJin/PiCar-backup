@@ -1,5 +1,8 @@
 var time = 0;
 var csvData;
+var photoPos = 8;
+var AllphotoPath = "/Users/kinfeiyang/Desktop/ok/camera/";
+
 imageDiv = document.getElementById("image_div");
 
 var increaseTime = function(){
@@ -71,7 +74,7 @@ function updateData(){
 //update image
 function updateImage(){
   allRowData2 = csvData.data[time]
-  filePath = "/Users/kinfeiyang/Desktop/ok/camera/" + allRowData2[8]
+  filePath = AllphotoPath + allRowData2[photoPos]
   console.log(filePath)
   imageDiv.innerHTML = ""
   var image = document.createElement("img");
