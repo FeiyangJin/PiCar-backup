@@ -10,7 +10,7 @@ AllPhotoPath = "/home/pi/ok/camera"
 
 #some constant based on data format
 LengthWithoutTime = 8
-LengthWithTime = 9
+LengthWithTime = LengthWithoutTime + 1
 dataTimePos = 0
 
 #match a photo to a set of data based on best-fit on time
@@ -47,7 +47,7 @@ def findPrevImage(dataList,index):
             break;
 
     if FindImage:
-        ImageName = dataList[index][8]
+        ImageName = dataList[index][LengthWithTime - 1]
         #add it to orignial element
         dataList[aIndex].append(ImageName)
         return 1
@@ -67,7 +67,7 @@ def findNextImage(dataList,index):
             break;
 
     if FindImage:
-        ImageName = dataList[index][8]
+        ImageName = dataList[index][LengthWithTime - 1]
         #add it to orignial element
         dataList[aIndex].append(ImageName)
         return 1
