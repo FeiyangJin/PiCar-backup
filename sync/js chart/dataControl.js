@@ -5,7 +5,7 @@ var AllphotoPath = "/Users/kinfeiyang/Desktop/710/camera/";
 var PlayTimer
 imageDiv = document.getElementById("image_div");
 
-console.log("hello")
+
 var jump_first = function(){
   time = 0
   updateData();
@@ -40,8 +40,10 @@ var autoPlayTimer = function(){
 
 
 var autoPlay = function(){
-
-    var frequency = document.getElementById("autoPlay_frequency").value * 1000
+    var frequency = 1000
+    if(document.getElementById("autoPlay_frequency").value){
+      frequency = document.getElementById("autoPlay_frequency").value * 1000;
+    }
 
     PlayTimer = setInterval(autoPlayTimer,frequency)
     //hide autoplay button, show stop button
@@ -118,10 +120,10 @@ function updateData(){
   imuGX = allRowData[5]
   imuGY = allRowData[6]
   imuGZ = allRowData[7]
-  document.getElementById('time_data').innerHTML = "<h3>" + "Time:  " + dataTime + "<h3> <br>";
-  document.getElementById('lidar_data').innerHTML = "<h3>" + "Lidar distance:  " + Lidar + "<h3> <br>";
+  document.getElementById('time_data').innerHTML = "<h3>" + "Time:  " + dataTime + "</h3> <br>";
+  document.getElementById('lidar_data').innerHTML = "<h3>" + "Lidar distance:  " + Lidar + "</h3> <br>";
   document.getElementById('imu_data').innerHTML = "<h3>" + "IMU data:  " + imuAX + ",  " + imuAY + ",  "
-  + imuAZ + ",  " + imuGX + ",  " + imuGY + ",  " + imuGZ + "<h3>";
+  + imuAZ + ",  " + imuGX + ",  " + imuGY + ",  " + imuGZ + "</h3>";
 
 }
 
@@ -135,7 +137,8 @@ function updateImage(){
     imageDiv.innerHTML = ""
     var image = document.createElement("img");
     image.setAttribute('src',filePath)
-    image.setAttribute('width','500')
+    image.setAttribute('width','400')
+    image.setAttribute('height','400')
     imageDiv.appendChild(image);
   }
 
