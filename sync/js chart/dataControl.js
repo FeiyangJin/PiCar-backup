@@ -7,10 +7,10 @@ imageDiv = document.getElementById("image_div");
 
 
 var jump_first = function(){
-  time = 0
-  updateData();
-  updateImage();
-  updateDataChart("clear");
+  while(time > 0){
+    document.getElementById('prev_button').click();
+  }
+
 }
 document.getElementById("first_button").addEventListener('click',jump_first)
 

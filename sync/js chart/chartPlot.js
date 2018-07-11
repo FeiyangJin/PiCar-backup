@@ -6,23 +6,17 @@ var maxDataSets = 50;
 var updateDataChart = function(optionString){
   if(optionString === "add"){
     var allRowData3 = csvData.data[time]
-    var dataTime = allRowData3[0]
-    var imuAX = allRowData3[2]
-    var imuAY = allRowData3[3]
-    var dataSet = [imuAX,imuAY]
-    addData(chart,dataTime,dataSet);
+    var dataTime3 = allRowData3[0]
+    var imuAX3 = allRowData3[2]
+    var imuAY3 = allRowData3[3]
+    var dataSet3 = [imuAX3,imuAY3]
+    addData(chart,dataTime3,dataSet3);
   }
   else if(optionString === "remove"){
     removeData(chart);
   }
   else if(optionString === "clear"){
-    console.log("we want to clear the chart")
-    var i = 1;
-    var length = chart.data.labels.length
-    while(i < length){
-      removeData(chart);
-      i++;
-    }
+
   }
 
 }
@@ -55,9 +49,9 @@ var chart = new Chart(ctx,{
 //add data to the front of graph
 function unshiftData(chart,label,dataSet){
     chart.data.labels.unshift(label);
-    var count = 0
+    var count = 0;
     chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(dataSet[count]);
+        dataset.data.unshift(dataSet[count]);
         count++;
     });
     chart.update();
@@ -94,14 +88,19 @@ function removeData(chart) {
     chart.data.datasets.forEach((dataset) => {
         dataset.data.pop();
     });
+    //console.log("Time is:" + time)
+    //console.log("maxDataSets is:" + maxDataSets)
+    //console.log("labels length is:" + chart.data.labels.length)
+    var LeftDataNumber = time + 1
     if(chart.data.labels.length < maxDataSets){
-      if(time >= maxDataSets){
-        var allRowData4 = csvData.data[time - maxDataSets]
-        var dataTime = allRowData4[0]
-        var imuAX = allRowData4[2]
-        var imuAY = allRowData4[3]
-        var dataSet = [imuAX,imuAY]
-        unshiftData(chart,dataTime,dataSet);
+      if(LeftDataNumber > maxDataSets || LeftDataNumber == maxDataSets){
+        //console.log("we decide to add to the front for index " + (time + 1 - maxDataSets))
+        var allRowData4 = csvData.data[LeftDataNumber - maxDataSets]
+        var dataTime4 = allRowData4[0]
+        var imuAX4 = allRowData4[2]
+        var imuAY4 = allRowData4[3]
+        var dataSet4 = [imuAX4,imuAY4]
+        unshiftData(chart,dataTime4,dataSet4);
       }
     }
     chart.update();
