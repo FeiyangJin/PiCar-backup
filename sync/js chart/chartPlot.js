@@ -2,26 +2,6 @@ var ctx = document.getElementById("myChart");
 var maxDataSets = 50;
 
 
-//update the chart based on option
-var updateDataChart = function(optionString){
-  if(optionString === "add"){
-    var allRowData3 = csvData.data[time]
-    var dataTime3 = allRowData3[0]
-    var imuAX3 = allRowData3[2]
-    var imuAY3 = allRowData3[3]
-    var dataSet3 = [imuAX3,imuAY3]
-    addData(chart,dataTime3,dataSet3);
-  }
-  else if(optionString === "remove"){
-    removeData(chart);
-  }
-  else if(optionString === "clear"){
-
-  }
-
-}
-
-
 //make the initial blank chart
 var chart = new Chart(ctx,{
   type: 'line',
@@ -46,7 +26,29 @@ var chart = new Chart(ctx,{
 
 })
 
+
+//update the chart based on option
+var updateDataChart = function(optionString){
+  if(optionString === "add"){
+    var allRowData3 = csvData.data[time]
+    var dataTime3 = allRowData3[0]
+    var imuAX3 = allRowData3[2]
+    var imuAY3 = allRowData3[3]
+    var dataSet3 = [imuAX3,imuAY3]
+    addData(chart,dataTime3,dataSet3);
+  }
+  else if(optionString === "remove"){
+    removeData(chart);
+  }
+  else if(optionString === "clear"){
+
+  }
+
+}
+
+
 //add data to the front of graph
+//used for keeping max data sets displayed
 function unshiftData(chart,label,dataSet){
     chart.data.labels.unshift(label);
     var count = 0;
@@ -56,6 +58,7 @@ function unshiftData(chart,label,dataSet){
     });
     chart.update();
 }
+
 
 //add data based to the end of graph
 function addData(chart, label, dataSet) {
@@ -73,6 +76,7 @@ function addData(chart, label, dataSet) {
 
 
 //remove first data
+//used for keeping max data sets displayed
 function shiftData(chart){
   chart.data.labels.shift();
   chart.data.datasets.forEach((dataset) => {

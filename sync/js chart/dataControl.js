@@ -1,11 +1,12 @@
 var time = 0;
 var csvData;
-var photoPos = 11;
-var AllphotoPath = "/Users/kinfeiyang/Desktop/710/camera/";
+var photoPos = 0; // the photo index in synchronized data row
+var AllphotoPath = "/Users/kinfeiyang/Desktop/710/camera/"; // path where you save all photos from one experiment
 var PlayTimer
-imageDiv = document.getElementById("image_div");
+imageDiv = document.getElementById("image_div"); //where we put the photo
 
 
+//jump to the first row of all data
 var jump_first = function(){
   while(time > 0){
     document.getElementById('prev_button').click();
@@ -15,6 +16,7 @@ var jump_first = function(){
 document.getElementById("first_button").addEventListener('click',jump_first)
 
 
+//stop the auto play
 var stopAutoPlay = function(){
   clearInterval(PlayTimer)
   console.log("you stop the auto play")
@@ -25,6 +27,7 @@ var stopAutoPlay = function(){
 document.getElementById('autoPlay_stop').addEventListener('click',stopAutoPlay)
 
 
+//timer for autoplay
 var autoPlayTimer = function(){
   if(time == csvData.data.length - 1 || time > (csvData.data.length - 1)){
     clearInterval(PlayTimer)
@@ -40,8 +43,8 @@ var autoPlayTimer = function(){
 
 
 var autoPlay = function(){
-    var frequency = 1000
-    if(document.getElementById("autoPlay_frequency").value){
+    var frequency = 1000;
+    if(! isNaN(document.getElementById("autoPlay_frequency").value)){
       frequency = document.getElementById("autoPlay_frequency").value * 1000;
     }
 
@@ -54,6 +57,7 @@ var autoPlay = function(){
 document.getElementById("autoPlay_button").addEventListener('click',autoPlay)
 
 
+//move to next data row
 var increaseTime = function(){
   time = time + 1;
   console.log(time)
@@ -73,6 +77,7 @@ var increaseTime = function(){
 document.getElementById('next_button').addEventListener('click',increaseTime)
 
 
+//move to previous data row
 var decreaseTime = function(){
   time = time - 1;
   console.log(time);
@@ -91,7 +96,8 @@ var decreaseTime = function(){
 document.getElementById("prev_button").addEventListener('click',decreaseTime)
 
 
-//parse csv file
+//parse csv file by PapaParse package
+//https://www.papaparse.com
 function loadFileAsText(){
   var fileToLoad = document.getElementById("fileToLoad").files[0];
   Papa.parse(fileToLoad, {
@@ -100,26 +106,28 @@ function loadFileAsText(){
   	complete: function(results) {
       csvData = results;
   		//console.log(results);
-      document.getElementById("move_button").hidden = false
+      document.getElementById("move_button").hidden = false;
+      photoPos = csvData.data[time].length - 1;
       updateData();
       updateImage();
       updateDataChart("add");
+
   	}
   });
 }
 
 
-//update data
+//update data on the page based on updated time
 function updateData(){
-  allRowData = csvData.data[time]
-  dataTime = allRowData[0]
-  Lidar = allRowData[1]
-  imuAX = allRowData[2]
-  imuAY = allRowData[3]
-  imuAZ = allRowData[4]
-  imuGX = allRowData[5]
-  imuGY = allRowData[6]
-  imuGZ = allRowData[7]
+  var allRowData = csvData.data[time]
+  var dataTime = allRowData[0]
+  var Lidar = allRowData[1]
+  var imuAX = allRowData[2]
+  var imuAY = allRowData[3]
+  var imuAZ = allRowData[4]
+  var imuGX = allRowData[5]
+  var imuGY = allRowData[6]
+  var imuGZ = allRowData[7]
   document.getElementById('time_data').innerHTML = "<h3>" + "Time:  " + dataTime + "</h3> <br>";
   document.getElementById('lidar_data').innerHTML = "<h3>" + "Lidar distance:  " + Lidar + "</h3> <br>";
   document.getElementById('imu_data').innerHTML = "<h3>" + "IMU data:  " + imuAX + ",  " + imuAY + ",  "
@@ -128,9 +136,9 @@ function updateData(){
 }
 
 
-//update image
+//update image on the page based on updated time
 function updateImage(){
-  allRowData2 = csvData.data[time]
+  var allRowData2 = csvData.data[time];
   filePath = AllphotoPath + allRowData2[photoPos]
   //console.log(filePath)
   if(!(allRowData2[photoPos] === undefined)){
