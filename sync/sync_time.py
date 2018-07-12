@@ -9,7 +9,7 @@ dataCSVPath = '/home/pi/ok/Lidar_IMU_Data.csv'
 AllPhotoPath = "/home/pi/ok/camera"
 
 #some constant based on data format
-LengthWithoutTime = 8
+LengthWithoutTime = 10
 LengthWithTime = LengthWithoutTime + 1
 dataTimePos = 0
 

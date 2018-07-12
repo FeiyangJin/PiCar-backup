@@ -1,3 +1,6 @@
+//This js is based on chart.js
+//https://www.chartjs.org
+
 var ctx = document.getElementById("myChart");
 var maxDataSets = 50;
 
