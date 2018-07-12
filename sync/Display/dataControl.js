@@ -1,7 +1,7 @@
 var time = 0;
 var csvData;
 var photoPos = 0; // the photo index in synchronized data row
-var AllphotoPath = "/Users/kinfeiyang/Desktop/710/camera/"; // path where you save all photos from one experiment
+var AllphotoPath = "../data_photo/camera/"; // path where you save all photos from one experiment
 var PlayTimer
 imageDiv = document.getElementById("image_div"); //where we put the photo
 

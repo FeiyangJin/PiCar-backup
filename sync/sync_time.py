@@ -5,12 +5,13 @@ import csv
 dataTimes = []
 dataList = []
 photoTimes = []
+#path where you save data and photo
 dataCSVPath = 'data_photo/Lidar_IMU_Data.csv'
 AllPhotoPath = "data_photo/camera"
 
 #some constant based on data format
 #The Length* will be updated in readData() based on data format
-LengthWithoutTime = 11 
+LengthWithoutTime = 11
 LengthWithTime = LengthWithoutTime + 1
 dataTimePos = 0
 
