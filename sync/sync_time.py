@@ -5,11 +5,12 @@ import csv
 dataTimes = []
 dataList = []
 photoTimes = []
-dataCSVPath = '/home/pi/ok/Lidar_IMU_Data.csv'
-AllPhotoPath = "/home/pi/ok/camera"
+dataCSVPath = 'data_photo/Lidar_IMU_Data.csv'
+AllPhotoPath = "data_photo/camera"
 
 #some constant based on data format
-LengthWithoutTime = 10
+#The Length* will be updated in readData() based on data format
+LengthWithoutTime = 11 
 LengthWithTime = LengthWithoutTime + 1
 dataTimePos = 0
 
@@ -96,10 +97,17 @@ def readData():
     global dataTimes
     global dataList
     global dataTimePos
+    global LengthWithoutTime
+    global LengthWithTime
     #read all data, which in the format [time,lidar,imu]
     with open(dataCSVPath,newline = '') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        updateLength = 0
         for row in spamreader:
+            if not updateLength:
+                LengthWithoutTime = len(row)
+                LengthWithTime = LengthWithoutTime + 1
+                updateLength = 1
             dataTimes.append(row[dataTimePos])
             dataList.append(row)
 
@@ -123,7 +131,7 @@ def sync():
 def write_sync_data():
     global dataList
     print("start writing csv file")
-    with open('sync_data_626.csv',"a",newline = '') as csvfile:
+    with open('sync_data_712.csv',"a",newline = '') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         for data in dataList:
             spamwriter.writerow(data)
