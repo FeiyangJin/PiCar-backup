@@ -1,21 +1,23 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
 #include <Wire.h>
 #define SLAVE_ADDRESS 0x04
 
 byte inputByte = 0;
-byte byteArray[100] = {1,2,3,4,5,6,7,8,9,10};
 double outputByte = 0;
 
 void setup() {
   pinMode(13, OUTPUT);
   Serial.begin(9600); // start serial for output
-  
+
 
   // initialize i2c as slave
   Wire.begin(SLAVE_ADDRESS);
-  
-  //set i2c speed
-  //Wire.setClock(400000L);
-  
+
   // define callbacks for i2c communication
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
@@ -31,7 +33,7 @@ void loop() {
         Serial.println(outputByte);
         outputByte = 0;
       }
-      
+
   }
 }
 
