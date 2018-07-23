@@ -1,3 +1,10 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
+
 #include <unistd.h>		//Needed for I2C port
 #include <fcntl.h>		//Needed for I2C port
 #include <sys/ioctl.h>		//Needed for I2C port
@@ -16,7 +23,7 @@ int file_i2c;
 int length;
 unsigned char buffer[60] = {0};
 
-	
+
 //----- OPEN THE I2C BUS -----
 char *filename = (char*)"/dev/i2c-1";
 if ((file_i2c = open(filename, O_RDWR)) < 0)
@@ -25,8 +32,8 @@ if ((file_i2c = open(filename, O_RDWR)) < 0)
 printf("Failed to open the i2c bus");
 return -1;
 }
-	
-int addr = 0x04;          //<<<<<The I2C address of the slave
+
+int addr = 0x04;          //The I2C address of the slave
 if (ioctl(file_i2c, I2C_SLAVE, addr) < 0)
 {
 	printf("Failed to acquire bus access and/or talk to slave.\n");
@@ -36,7 +43,7 @@ if (ioctl(file_i2c, I2C_SLAVE, addr) < 0)
 
 
 //----- READ BYTES -----
-length = 1;		//<<< Number of bytes to read
+length = 1;		//Number of bytes to read
 int totalRead = 0;
 struct timeval start;
 gettimeofday(&start,NULL);
@@ -51,7 +58,7 @@ while(totalRead < 10000){
 	        //printf("Failed to read from the i2c bus.\n");
 	}
 	else
-	{	
+	{
 		//printf("Data read: %s\n", buffer);
 		totalRead ++;
 		//cout << "The first element of buffer:" << buffer[0] << endl;
@@ -74,7 +81,7 @@ cout << "total read time for 10000 bytes in milliseconds is " << (endms - startm
 	printf("Failed to read from the i2c bus.\n");
 }
 else
-{	
+{
 	time_t result = time(NULL);
 	cout << asctime(localtime(&result)) << result << " seconds since the Epoch" << endl;
 	//printf("Data read: %s\n", buffer);

@@ -1,3 +1,10 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
+
 /**********************************************************
  SPI_Hello_Arduino
    Configures an Raspberry Pi as an SPI master and
@@ -25,7 +32,7 @@ using namespace std;
 Declare Global Variables
 ***********************************************************/
 
-int fd;
+int fd; //the device variable
 unsigned char result;
 
 /**********************************************************
@@ -58,14 +65,18 @@ int main (int argc, char *argv[])
 	cout << "Enter the SPI speed you want: " << endl;
 	cin >> speed;
 
+	//if we connect to cell0 on pi, the device is spidev0.0
 	fd = open("/dev/spidev0.0", O_RDWR);
 
+	//set speed to the port
 	ioctl (fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
 
+	//start time
 	struct timeval start;
 	gettimeofday(&start,NULL);
 
 
+	//The loop which did the speed testing
 	for (int i = 0; i < loopByte; i++)
 	{
 	 result = spiTxRx('J');

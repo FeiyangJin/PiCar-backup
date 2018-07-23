@@ -1,3 +1,9 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
 int inputCount = 0;
 int CountInTenK = 0;
 
@@ -7,7 +13,7 @@ Serial.begin(3000000);
 
 void loop(){
 
-//on serial monitor, type in 3 to read count 
+//on serial monitor, type in 3 to read count
 if(Serial.available() > 0){
   byte input = Serial.read();
   if(input == 51){

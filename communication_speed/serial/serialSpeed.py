@@ -1,3 +1,7 @@
+## Author: Feiyang jin
+## Email: feiyang.jin@wustl.edu
+## Organization: Washington University in St. Louis
+## Date: July 2018
 import serial
 import time
 
