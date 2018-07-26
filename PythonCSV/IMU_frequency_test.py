@@ -30,8 +30,9 @@ def getData():
         quit()
     lib.lsm9ds1_calibrate(imu)
 
-    while time.time() - startTime < 10:
-        beforeIf = time.time()
+    while True:
+        #beforeIf = time.time()
+        time.sleep(0.2)        
         if lib.lsm9ds1_accelAvailable(imu) > 0:
             afterIf = time.time()
             lib.lsm9ds1_readAccel(imu)
@@ -55,19 +56,19 @@ def getData():
 ##            cgxl.append(cgx)
 ##            cgyl.append(cgy)
 ##            cgzl.append(cgz)
-            #print(cax,cay,caz,cgx,cgy,cgz)
+            print(cax,cay,caz,cgx,cgy,cgz)
             #diff = time.time() - lasttime
-            timeDiffer.append(time.time() - lasttime - afterIf + beforeIf)
+            #timeDiffer.append(time.time() - lasttime - afterIf + beforeIf)
             #print(time.time() - lasttime)
-            lasttime = time.time()
+            #lasttime = time.time()
 
-    print("start writing data")
-    with open(filename,"a",newline = '') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-        for i in range(len(timeDiffer)):
-            #row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
-            row = [timeDiffer[i]]
-            spamwriter.writerow(row)
+##    print("start writing data")
+##    with open(filename,"a",newline = '') as csvfile:
+##        spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+##        for i in range(len(timeDiffer)):
+##            #row = [caxl[i],cayl[i],cazl[i],cgxl[i],cgyl[i],cgzl[i]]
+##            row = [timeDiffer[i]]
+##            spamwriter.writerow(row)
 
 startTime = time.time()
 lasttime = time.time()
