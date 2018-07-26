@@ -1,3 +1,8 @@
+## Author: Feiyang jin
+## Email: feiyang.jin@wustl.edu
+## Organization: Washington University in St. Louis
+## Date: July 2018
+
 import smbus
 import time
 import struct
@@ -16,7 +21,7 @@ def readManyBytes():
    for i in range(0,byteNumber):
       byte = bus.read_byte(address)
       byteCount = byteCount +1
-      
+
    #print("we read %i bytes" % byteCount)
    #byteCount = 0
 
@@ -26,8 +31,6 @@ def communicate():
    global byteCount
    startTime = time.time()
    while readCount < loopNumber:
-     # sleep one second
-     # time.sleep(1)
      readManyBytes()
      readCount = readCount + 1
    endTime = time.time()

@@ -1,11 +1,18 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
+
 #include <Wire.h>
 #define SLAVE_ADDRESS 0x04
-int number = 3;
+int data = 3;
 int state = 0;
 
 void setup() {
   pinMode(13, OUTPUT);
-  Serial.begin(9600); // start serial for output
+  Serial.begin(9600);
 
   // initialize i2c as slave
   Wire.begin(SLAVE_ADDRESS);
@@ -23,10 +30,10 @@ void loop() {
 // callback for received data
 void receiveData(int byteCount){
   while(Wire.available()) {
-    number = Wire.read();
+    outputdata = Wire.read();
     Serial.print("data received: ");
-    Serial.println(number);
-    if (number == 1){
+    Serial.println(outputdata);
+    if (outputdata == 1){
       if (state == 0){
         digitalWrite(13, HIGH); // set the LED on
         state = 1;
@@ -42,7 +49,7 @@ void receiveData(int byteCount){
 // callback for sending data
 void sendData(){
   Serial.print("data sent:");
-  Serial.println(number);
-  Wire.write(number);
-  
+  Serial.println(data);
+  Wire.write(data);
+
 }

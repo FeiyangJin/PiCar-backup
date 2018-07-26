@@ -1,3 +1,8 @@
+## Author: Feiyang jin
+## Email: feiyang.jin@wustl.edu
+## Organization: Washington University in St. Louis
+## Date: July 2018
+
 import spidev
 import time
 
@@ -11,7 +16,7 @@ def communicate():
       speed = int(input("Give the speed of spi "))
       if not speed:
          continue
-      
+
       spi = spidev.SpiDev()
       spi.open(0,0)
 

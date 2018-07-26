@@ -1,20 +1,25 @@
+/*
+Author: Feiyang Jin
+Email: feiyang.jin@wustl.edu
+Organization: Washington University in St. Louis
+Date: July 2018
+*/
+
 #include <SPI.h>
 //Notice: SPI.h is used for arduino as master
 //As a result, we cannot set spi speed using the funcion in library
-// Written by Feiyang Jin
-// July 2018
+//However,the interrupt function can still be used
+
 
 int CountInTenK = 0;
 int inputCount = 0;
 void setup (void)
 {
   Serial.begin (115200);   // debugging
-  // have to send on master in, *slave out*
-  pinMode(MISO, OUTPUT);
 
   // turn on SPI in slave mode
+  pinMode(MISO, OUTPUT);
   SPCR |= _BV(SPE);
-  //SPI.setClockDivider(SPI_CLOCK_DIV2);
 
   // now turn on interrupts
   SPI.attachInterrupt();
@@ -54,4 +59,4 @@ void loop (void)
 
   }
 
-}  // end of loop
+}
